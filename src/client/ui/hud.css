@@ -1,0 +1,261 @@
+/* Race HUD. Everything is sized in em relative to .hud so duo halves scale as a unit. */
+
+.hud {
+  --hud-ink: #1b1036;
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; pointer-events: none;
+  font-family: var(--font-display); color: #fff; font-size: clamp(9px, min(1.5vw, 2.7vh), 34px);
+  padding: calc(0.9em + var(--safe-t)) calc(1em + var(--safe-r)) calc(0.9em + var(--safe-b)) calc(1em + var(--safe-l));
+  contain: layout style;
+}
+.hud--duo { font-size: clamp(8px, min(1.1vw, 1.95vh), 26px); height: 50%; }
+.hud--duo.hud--p2 { top: 50%; }
+.hud--duo.hud--p1 { bottom: 50%; }
+.race--duo .race__huds::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 0.35rem; margin-top: -0.175rem; z-index: 3;
+  background: linear-gradient(90deg, var(--p1), #fff 50%, var(--p2)); box-shadow: 0 0 0 0.12rem var(--ink);
+}
+.hud--duo.hud--p1::before, .hud--duo.hud--p2::before {
+  content: 'P1'; position: absolute; left: 50%; top: calc(0.4em + var(--safe-t)); transform: translateX(-50%);
+  padding: 0.05em 0.6em; border-radius: 0.4em; background: var(--p1); border: 0.12em solid var(--hud-ink); font-family: var(--font-num); font-size: 1.1em;
+}
+.hud--duo.hud--p2::before { content: 'P2'; background: var(--p2); top: 0.4em; }
+
+/* shared outlined text */
+.hud-timer, .hud-lap, .hud-pos, .hud-coins, .hud-count, .hud-final, .hud-wrong, .hud-finish, .hud-speed__read, .hud-splits, .hud-ghost {
+  text-shadow: 0.07em 0 0 var(--hud-ink), -0.07em 0 0 var(--hud-ink), 0 0.07em 0 var(--hud-ink), 0 -0.07em 0 var(--hud-ink), 0.05em 0.05em 0 var(--hud-ink), -0.05em 0.05em 0 var(--hud-ink), 0 0.14em 0 var(--hud-ink);
+}
+
+/* ───── fx layers ───── */
+.hud__fx { position: absolute; inset: 0; }
+/* The renderer draws the ink splat (glossy metaballs with drips, post.ts); this flat SVG layer
+   stacked a second, differently shaped splat on top of it, so it stays off in races. */
+.race .hud-ink { display: none; }
+.hud-ink { position: absolute; inset: -4%; opacity: 0; transition: opacity 0.12s linear; }
+.hud-ink svg { width: 100%; height: 100%; display: block; }
+/* star: a thin, bright rainbow rim that rotates (transform only — a full-screen hue-rotate filter
+   repainted every frame and read as a muddy wash at 85 % opacity) */
+.hud-star {
+  position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s ease; overflow: hidden;
+  -webkit-mask: radial-gradient(ellipse at center, transparent 66%, rgba(0, 0, 0, 0.6) 86%, #000 100%);
+  mask: radial-gradient(ellipse at center, transparent 66%, rgba(0, 0, 0, 0.6) 86%, #000 100%);
+}
+.hud-star::before {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 150vmax; height: 150vmax; margin: -75vmax 0 0 -75vmax;
+  background: conic-gradient(from 0deg, #ff6fa8, #ffe26b, #6cf0a8, #6fe0ff, #a88bff, #ff6fa8);
+  animation: star-spin 1.4s linear infinite; animation-play-state: paused;
+}
+.hud.is-star .hud-star { opacity: 0.5; }
+.hud.is-star .hud-star::before { animation-play-state: running; }
+@keyframes star-spin { to { transform: rotate(360deg); } }
+.hud-boost { position: absolute; inset: 0; opacity: 0; transition: opacity 0.2s ease; box-shadow: inset 0 0 4em 0.6em rgba(255, 170, 40, 0.55); }
+.hud.is-boosting .hud-boost { opacity: 1; }
+
+/* ───── standings strip (left) ───── */
+.hud-strip {
+  position: absolute; left: calc(0.8em + var(--safe-l)); top: calc(8.6em + var(--safe-t));
+  width: 3.4em; height: calc(var(--n, 8) * 2.3em);
+}
+.hud-strip__slot { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 0.25em; height: 2.3em; transition: transform 0.45s var(--ease-pop); will-change: transform; }
+.hud-strip__rank { width: 1em; text-align: right; font-family: var(--font-num); font-size: 0.8em; opacity: 0.9; text-shadow: 0 0.1em 0 var(--hud-ink); }
+.hud-strip__portrait { width: 1.95em; height: 1.95em; border-radius: 50%; box-shadow: 0 0.12em 0 var(--hud-ink); opacity: 0.88; }
+.hud-strip__slot.is-human .hud-strip__portrait { width: 2.15em; height: 2.15em; opacity: 1; box-shadow: 0 0 0 0.16em #fff, 0 0 0 0.32em var(--p1), 0 0.2em 0 0.3em var(--hud-ink); }
+.hud-strip__slot.is-p2 .hud-strip__portrait { box-shadow: 0 0 0 0.16em #fff, 0 0 0 0.32em var(--p2), 0 0.2em 0 0.3em var(--hud-ink); }
+.hud-strip__slot.is-finished .hud-strip__portrait { filter: saturate(1.2); outline: 0.12em dashed rgba(255, 255, 255, 0.9); outline-offset: 0.1em; }
+
+/* ───── top-left: item, coins ───── */
+.hud-tl { position: absolute; left: calc(1em + var(--safe-l)); top: calc(0.9em + var(--safe-t)); display: flex; align-items: flex-start; gap: 0.8em; }
+.hud-item { display: flex; flex-direction: column; align-items: center; gap: 0.3em; }
+.hud-item__box {
+  position: relative; width: 5.2em; height: 5.2em; border-radius: 1.2em; display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.12) 70%), rgba(27, 16, 54, 0.45);
+  border: 0.22em solid #fff; box-shadow: 0 0 0 0.2em var(--hud-ink), 0 0.35em 0 0.2em var(--hud-ink), 0 0.6em 1.2em rgba(0, 0, 0, 0.3);
+}
+.hud-item__box::after {
+  content: ''; position: absolute; inset: 0.35em; border-radius: 0.85em; border: 0.12em dashed rgba(255, 255, 255, 0.35);
+}
+.hud-item__empty { position: absolute; width: 1.6em; height: 1.6em; border-radius: 50%; background: rgba(255, 255, 255, 0.15); }
+.hud-item__box.has-item .hud-item__empty, .hud-item__box.is-rolling .hud-item__empty { display: none; }
+.hud-item__reel { position: absolute; inset: 0.45em; display: grid; place-items: center; }
+.hud-item__icon { grid-area: 1 / 1; width: 100%; height: 100%; filter: drop-shadow(0 0.12em 0 rgba(27, 16, 54, 0.6)); }
+.hud-item__icon svg { width: 100%; height: 100%; display: block; }
+.hud-item__box.is-rolling { animation: roll-glow 0.3s linear infinite alternate; }
+.hud-item__box.is-rolling .hud-item__icon { transform: scale(0.86); filter: blur(0.02em) brightness(1.1); }
+@keyframes roll-glow { from { border-color: #fff; } to { border-color: var(--yellow); } }
+.hud-item__uses { display: flex; gap: 0.3em; margin-top: 0.15em; }
+.hud-item__uses i { width: 0.95em; height: 0.95em; border-radius: 50%; background: rgba(27, 16, 54, 0.45); border: 0.14em solid #fff; box-shadow: 0 0 0 0.1em var(--hud-ink); }
+.hud-item__uses i.is-on { background: var(--yellow); box-shadow: 0 0 0 0.1em var(--hud-ink), 0 0 0.4em rgba(255, 210, 63, 0.8); }
+.hud-coins { display: flex; align-items: center; gap: 0.2em; margin-top: 0.8em; font-family: var(--font-num); font-size: 1.5em; }
+.hud-coins__ico { width: 1.4em; height: 1.4em; }
+.hud-coins__ico svg { width: 100%; height: 100%; display: block; }
+.hud-coins__x { font-size: 0.7em; }
+.hud-coins__num { font-weight: 400; min-width: 1.2em; }
+.hud-coins.is-max .hud-coins__num { color: var(--yellow); }
+.hud-shrunk {
+  display: flex; align-items: center; gap: 0.3em; margin-top: 0.9em; padding: 0.25em 0.7em; border-radius: 999px; font-size: 0.95em;
+  background: #7fd1ff; color: var(--hud-ink); border: 0.14em solid var(--hud-ink); animation: pulse 0.8s ease-in-out infinite;
+}
+.hud-shrunk .ico { color: #ffe600; filter: drop-shadow(0 0.06em 0 var(--hud-ink)); }
+
+/* ───── top-right: lap + timer ───── */
+.hud-tr { position: absolute; right: calc(1em + var(--safe-r)); top: calc(0.8em + var(--safe-t)); display: flex; flex-direction: column; align-items: flex-end; gap: 0.1em; }
+.hud-lap { display: flex; align-items: baseline; gap: 0.2em; font-family: var(--font-num); font-style: italic; }
+.hud-lap__label { font-size: 1.2em; color: var(--yellow); }
+.hud-lap__cur { font-size: 2.6em; font-weight: 400; line-height: 1; }
+.hud-lap__max { font-size: 1.5em; }
+.hud-lap.is-final .hud-lap__cur { color: #ff6b8a; }
+.hud-timer { font-family: var(--font-num); font-size: 1.7em; letter-spacing: 0.03em; font-variant-numeric: tabular-nums; }
+.hud-splits { display: flex; flex-direction: column; align-items: flex-end; gap: 0.05em; font-size: 0.85em; opacity: 0.9; }
+.hud-splits li { display: flex; gap: 0.5em; font-family: var(--font-num); }
+.hud-splits li span { color: rgba(255, 255, 255, 0.75); }
+.hud-splits li.is-best b { color: #ff9cf0; }
+.hud-splitflash { height: 2.3em; width: 14em; position: relative; }
+.hud-splitflash__item {
+  position: absolute; right: 0; top: 0.2em; display: flex; align-items: center; gap: 0.5em; padding: 0.25em 0.8em; border-radius: 0.6em; white-space: nowrap;
+  background: rgba(27, 16, 54, 0.8); border: 0.14em solid #fff; font-family: var(--font-num); font-size: 1.15em;
+}
+.hud-splitflash__item b { color: var(--yellow); font-weight: 400; }
+.hud-splitflash__item em { font-style: normal; font-size: 0.75em; padding: 0.05em 0.35em; border-radius: 0.3em; background: #b8119b; }
+.hud-splitflash__item.is-best { border-color: #ff9cf0; }
+
+/* ───── top-centre ───── */
+.hud-tc { position: absolute; left: 50%; top: calc(0.9em + var(--safe-t)); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5em; }
+.hud--duo .hud-tc { top: 2.4em; }
+.hud-ghost {
+  font-family: var(--font-num); font-size: 1.9em; padding: 0.05em 0.6em; border-radius: 0.5em; background: rgba(27, 16, 54, 0.55); border: 0.1em solid rgba(255, 255, 255, 0.7);
+  font-variant-numeric: tabular-nums;
+}
+.hud-ghost[data-sign='1'] { color: #ff6b6b; }
+.hud-ghost[data-sign='-1'] { color: #5cb8ff; }
+.hud-toast {
+  padding: 0.35em 1em; border-radius: 999px; font-size: 1.15em; white-space: nowrap; color: var(--hud-ink);
+  background: #fff; border: 0.16em solid var(--hud-ink); box-shadow: 0 0.2em 0 var(--hud-ink);
+}
+.hud-toast[data-tone='good'] { background: linear-gradient(180deg, #d9ffe9, var(--green)); }
+.hud-toast[data-tone='bad'] { background: linear-gradient(180deg, #ffd6db, #ff7a88); }
+.hud-toast[data-tone='info'] { background: linear-gradient(180deg, #fff, #fff3a8); }
+.hud-pause {
+  position: absolute; top: calc(0.9em + var(--safe-t)); right: 50%; margin-right: -9em; width: 2.4em; height: 2.4em; border-radius: 0.7em;
+  display: grid; place-items: center; background: rgba(27, 16, 54, 0.55); color: #fff; border: 0.12em solid rgba(255, 255, 255, 0.8);
+  pointer-events: auto; opacity: 0.75; transition: opacity 0.15s, transform 0.15s var(--ease-pop);
+}
+.hud-pause:hover { opacity: 1; transform: scale(1.1); }
+.hud-pause .ico { width: 1.3em; height: 1.3em; }
+[data-input='keyboard'] .hud-pause, [data-input='gamepad'] .hud-pause, .touch-controls-on .hud-pause { display: none; }
+
+/* ───── bottom-left: speed + drift ───── */
+.hud-bl { position: absolute; left: calc(1em + var(--safe-l)); bottom: calc(0.9em + var(--safe-b)); display: flex; align-items: flex-end; gap: 0.8em; }
+.hud-speed { position: relative; width: 7.4em; height: 7.4em; }
+.hud-speed__gauge { position: absolute; inset: 0; }
+.hud-speed__gauge svg { width: 100%; height: 100%; display: block; }
+.hud-speed__arc { stroke: #19d3ff; transition: stroke 0.2s; }
+.hud.is-boosting .hud-speed__arc { stroke: #ffb020; }
+.hud-speed__read { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 0.4em; font-family: var(--font-num); }
+.hud-speed__num { font-size: 2.3em; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; }
+.hud-speed__read small { font-size: 0.75em; opacity: 0.9; }
+.hud-drift { display: flex; gap: 0.15em; margin-bottom: 1em; opacity: 0; transition: opacity 0.12s; }
+.hud-drift i {
+  width: 1.1em; height: 1.8em; background: currentColor;
+  clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%);
+}
+.hud-drift[data-level='1'], .hud-drift[data-level='2'], .hud-drift[data-level='3'] { opacity: 1; }
+.hud-drift[data-level='1'] { color: #4fb3ff; filter: drop-shadow(0 0 0.35em #4fb3ff); }
+.hud-drift[data-level='2'] { color: #ff9a2e; filter: drop-shadow(0 0 0.45em #ff9a2e); }
+.hud-drift[data-level='3'] { color: #c65bff; filter: drop-shadow(0 0 0.6em #c65bff); animation: drift-pulse 0.35s ease-in-out infinite alternate; }
+.hud-drift[data-level='1'] i:nth-child(n+2), .hud-drift[data-level='2'] i:nth-child(3) { opacity: 0.25; }
+@keyframes drift-pulse { to { transform: scale(1.12); } }
+
+/* ───── bottom-right: minimap + position ───── */
+.hud-br { position: absolute; right: calc(1em + var(--safe-r)); bottom: calc(0.6em + var(--safe-b)); display: flex; flex-direction: column; align-items: flex-end; gap: 0.2em; }
+.hud-map { width: 12em; height: 10em; display: block; filter: drop-shadow(0 0.2em 0.3em rgba(0, 0, 0, 0.35)); }
+.hud-pos { display: flex; align-items: baseline; font-family: var(--font-num); font-style: italic; line-height: 0.9; transform-origin: 70% 80%; }
+.hud-pos__num { font-size: 6em; font-weight: 400; }
+.hud-pos__suffix { font-size: 2.4em; margin-left: 0.05em; }
+.hud-pos[data-tone='gold'] { color: #ffd23f; }
+.hud-pos[data-tone='silver'] { color: #e8eef5; }
+.hud-pos[data-tone='bronze'] { color: #f0a86a; }
+.hud-pos[data-tone='plain'] { color: #fff; }
+
+/* ───── centre banners ───── */
+.hud-center { position: absolute; inset: 0; display: grid; place-items: center; }
+.hud-center > * { grid-area: 1 / 1; }
+.hud-intro {
+  display: flex; flex-direction: column; align-items: center; gap: 0.3em; padding: 1em 2.4em;   border-radius: 1.2em; background: rgba(27, 16, 54, 0.72); border: 0.2em solid #fff; box-shadow: 0 0 0 0.2em var(--hud-ink); text-align: center;
+  position: relative; top: 7em;
+}
+.hud-intro__sub { font-size: 1em; color: var(--yellow); font-family: var(--font-body); }
+.hud-intro__title { font-size: 2.6em; font-weight: 400; font-style: italic; }
+.hud-intro__hint { font-size: 0.85em; opacity: 0.8; font-family: var(--font-body); animation: pulse 1.3s ease-in-out infinite; }
+.hud-count { font-family: var(--font-num); font-style: italic; font-size: 11em; line-height: 1; color: #fff; }
+.hud-count[data-n='3'] { color: #ff6b6b; }
+.hud-count[data-n='2'] { color: #ffd23f; }
+.hud-count[data-n='1'] { color: #7dffb0; }
+.hud-count[data-n='0'] { color: #fff; font-size: 12em; background: linear-gradient(180deg, #fff 20%, #7dffb0 60%, #19b862); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0.05em 0.05em 0 var(--hud-ink)) drop-shadow(-0.03em -0.03em 0 var(--hud-ink)); text-shadow: none; }
+.hud-final {
+  display: flex; flex-direction: column; align-items: center; padding: 0.3em 3em; width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 61, 139, 0.92) 12%, rgba(255, 138, 31, 0.92) 88%, transparent);
+  border-top: 0.2em solid #fff; border-bottom: 0.2em solid #fff; position: relative; top: -7.5em;
+}
+.hud-final__ko { font-size: 3.4em; font-style: italic; }
+.hud-final__en { font-family: var(--font-num); font-size: 1.2em; letter-spacing: 0.3em; }
+.hud-wrong {
+  display: flex; align-items: center; gap: 0.3em; padding: 0.3em 1em; border-radius: 0.6em; position: relative; top: -2.2em;
+  font-size: 3em; background: rgba(214, 20, 58, 0.85); border: 0.08em solid #fff; animation: wrong-flash 0.5s steps(2, jump-none) infinite;
+}
+.hud-wrong .ico { width: 1em; height: 1em; }
+@keyframes wrong-flash { 50% { opacity: 0.35; } }
+/* sits in the upper half: centred, the "N위" line covered the player's kart for the whole finish orbit */
+.hud-finish { display: flex; flex-direction: column; align-items: center; gap: 0.1em; transform: rotate(-3deg); position: relative; top: -6.5em; }
+.hud-finish__text {
+  font-family: var(--font-num); font-style: italic; font-size: 7em; line-height: 1; padding: 0 0.2em;
+  background: repeating-conic-gradient(#fff 0 25%, #1b1036 0 50%) 0 0 / 0.5em 0.5em; -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0.05em 0.05em 0 #ff3d8b) drop-shadow(-0.03em -0.03em 0 #fff); text-shadow: none;
+}
+.hud-finish__pos { font-family: var(--font-num); font-size: 3.6em; font-style: italic; }
+.hud-finish[data-tone='gold'] .hud-finish__pos { color: #ffd23f; }
+.hud-finish[data-tone='silver'] .hud-finish__pos { color: #e8eef5; }
+.hud-finish[data-tone='bronze'] .hud-finish__pos { color: #f0a86a; }
+
+.hud-fps { position: absolute; left: 50%; bottom: calc(0.4em + var(--safe-b)); transform: translateX(-50%); font-family: var(--font-num); font-size: 0.8em; padding: 0.1em 0.5em; border-radius: 0.4em; background: rgba(0, 0, 0, 0.45); }
+
+/* Hide gameplay widgets during the intro fly-over */
+.hud[data-phase='intro'] .hud-tl, .hud[data-phase='intro'] .hud-tr, .hud[data-phase='intro'] .hud-bl,
+.hud[data-phase='intro'] .hud-br, .hud[data-phase='intro'] .hud-strip { opacity: 0; }
+.hud-tl, .hud-tr, .hud-bl, .hud-br, .hud-strip { transition: opacity 0.4s ease; }
+.hud--tt .hud-strip, .hud--tt .hud-pos { display: none; }
+.hud--noitems .hud-item { display: none; }
+
+/* Duo halves: compact the map */
+.hud--duo .hud-map { width: 10em; height: 8em; }
+.hud--duo .hud-pos__num { font-size: 5em; }
+/* No room for 8 readable portraits between the item box and the gauge in a half-height view (at 0.62
+   scale they were ~12 px dots); the big position numeral + minimap carry the standings in duo. */
+.hud--duo .hud-strip { display: none; }
+.hud--duo .hud-speed { width: 5em; height: 5em; }
+.hud--duo .hud-speed__num { font-size: 1.6em; }
+.hud--duo .hud-count { font-size: 8em; }
+.hud--duo .hud-finish__text { font-size: 5em; }
+.hud--duo .hud-finish { top: -4.5em; }
+
+/* Touch controls take the bottom corners: lift HUD widgets out of the way */
+.touch-controls-on .hud--single .hud-splits { display: none; }
+.touch-controls-on .hud--single .hud-bl { bottom: auto; top: calc(9.4em + var(--safe-t)); left: auto; right: calc(1em + var(--safe-r)); flex-direction: row-reverse; }
+.touch-controls-on .hud--single .hud-speed { width: 5.2em; height: 5.2em; }
+.touch-controls-on .hud--single .hud-speed__num { font-size: 1.6em; }
+/* right: clear of the timer column (1em inset + ~9.8em "00:00.000" at 1.7em): at 9em the map drew over its first digit */
+.touch-controls-on .hud--single .hud-br { bottom: auto; top: calc(0.8em + var(--safe-t)); right: calc(10.6em + var(--safe-r)); flex-direction: row-reverse; align-items: flex-start; gap: 0.6em; }
+.touch-controls-on .hud--single .hud-map { width: 7em; height: 6em; }
+.touch-controls-on .hud--single .hud-pos__num { font-size: 4em; }
+.touch-controls-on .hud--single .hud-pos__suffix { font-size: 1.6em; }
+.touch-controls-on .hud--single .hud-tc { top: calc(4.2em + var(--safe-t)); }
+.touch-controls-on .hud--single .hud-strip { transform: scale(0.8); transform-origin: left top; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-strip__slot { transition: none; }
+  .hud-wrong, .hud-drift[data-level='3'], .hud-shrunk, .hud-star::before { animation: none; }
+}
+
+/* Portrait phones: larger HUD type, widgets stacked under the timer, clear of the pause button */
+.vp-portrait .hud--single { font-size: clamp(9px, 2.7vw, 22px); }
+.vp-portrait.touch-controls-on .hud--single .hud-splitflash { display: none; }
+.vp-portrait.touch-controls-on .hud--single .hud-br { top: calc(5.8em + var(--safe-t)); right: calc(1em + var(--safe-r)); }
+.vp-portrait.touch-controls-on .hud--single .hud-bl { top: calc(5.8em + var(--safe-t)); right: calc(13.5em + var(--safe-r)); }

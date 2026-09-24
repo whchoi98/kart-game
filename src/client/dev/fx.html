@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FX preview — pipeline / camera / particles</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #111; overflow: hidden; font-family: system-ui, sans-serif; }
+    #view { position: fixed; inset: 0; }
+    #hud { position: fixed; left: 10px; top: 8px; color: #fff; font: 12px/1.35 ui-monospace, monospace;
+      background: rgba(0,0,0,.45); padding: 6px 9px; border-radius: 8px; pointer-events: none; white-space: pre; }
+    #labels { position: fixed; inset: 0; pointer-events: none; }
+    #labels div { position: absolute; transform: translate(-50%, 0); color: #fff; font: 600 12px system-ui, sans-serif;
+      background: rgba(20,16,40,.6); padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <div id="view"></div>
+  <div id="labels"></div>
+  <div id="hud"></div>
+  <script type="module" src="./fx.ts"></script>
+</body>
+</html>

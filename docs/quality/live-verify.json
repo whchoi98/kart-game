@@ -1,0 +1,188 @@
+{
+  "at": "2026-09-24T03:44:14.845Z",
+  "siteUrl": "https://my-kart.whchoi.net/",
+  "build": {
+    "version": "1.0.0",
+    "id": "a20d45c7058fa033",
+    "builtAt": "2026-09-24T03:39:41.215Z"
+  },
+  "passed": 35,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "CloudFormation stack is complete",
+      "ok": true,
+      "detail": "UPDATE_COMPLETE"
+    },
+    {
+      "name": "ALB exists in the existing VPC",
+      "ok": true,
+      "detail": "arn:aws:elasticloadbalancing:ap-northeast-2:061525506239:loadbalancer/app/TurboP-Compu-AThHeODcrias/62f29e563c847a53"
+    },
+    {
+      "name": "ALB is internet-facing in the public subnets",
+      "ok": true,
+      "detail": "ap-northeast-2a:subnet-08486a1e618b1991e, ap-northeast-2b:subnet-0c161777c4031c320"
+    },
+    {
+      "name": "ALB SG admits only the CloudFront prefix list pl-22a6434b on TCP 80",
+      "ok": true,
+      "detail": "sg-07eeef0c0f53d0cb4 ingress=[{\"p\":80,\"pl\":[\"pl-22a6434b\"],\"cidr\":[]}]"
+    },
+    {
+      "name": "Listener :80 default action is a fixed 403",
+      "ok": true,
+      "detail": "1 listener(s)"
+    },
+    {
+      "name": "Every forwarding rule requires the X-Origin-Verify header",
+      "ok": true,
+      "detail": "1 rule(s)"
+    },
+    {
+      "name": "ECS service is running the desired task count (>= 2)",
+      "ok": true,
+      "detail": "2/2 FARGATE"
+    },
+    {
+      "name": "Service subnets are the private subnets, public IP disabled",
+      "ok": true,
+      "detail": "[\"subnet-095297380cd45e1eb\",\"subnet-07b1e65682847dce9\"]"
+    },
+    {
+      "name": "Task definition: ARM64 Fargate, read-only root, non-root user",
+      "ok": true,
+      "detail": "1024 CPU / 2048 MiB, ARM64"
+    },
+    {
+      "name": "Task ENIs have no public IP association",
+      "ok": true,
+      "detail": "2 ENI(s), private IPs 10.100.41.204, 10.100.30.86"
+    },
+    {
+      "name": "Task SG admits only the ALB SG on 8080",
+      "ok": true,
+      "detail": "sg-074fbb6328165a06a"
+    },
+    {
+      "name": "Tasks spread over both AZs",
+      "ok": true,
+      "detail": "subnet-095297380cd45e1eb, subnet-07b1e65682847dce9"
+    },
+    {
+      "name": "Task subnets default-route through the VPC's existing NAT gateways",
+      "ok": true,
+      "detail": "rtb-0cc7d19bb484c49ef→nat-00b8a70dc184a4d0c, rtb-021c674ad5e43276f→nat-08379e076e2e6e234"
+    },
+    {
+      "name": "Stack owns no VPC / subnet / NAT / route / IGW / endpoint",
+      "ok": true,
+      "detail": "2 NAT gateway(s) in VPC: nat-08379e076e2e6e234, nat-00b8a70dc184a4d0c"
+    },
+    {
+      "name": "All ALB targets healthy",
+      "ok": true,
+      "detail": "10.100.41.204:healthy, 10.100.30.86:healthy"
+    },
+    {
+      "name": "GET / via CloudFront → 200 HTML",
+      "ok": true,
+      "detail": "200 text/html; charset=utf-8"
+    },
+    {
+      "name": "CSP present and script-src is self-only (no unsafe-inline/eval)",
+      "ok": true,
+      "detail": "default-src 'self'; script-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'se"
+    },
+    {
+      "name": "HSTS, nosniff, frame DENY, referrer policy",
+      "ok": true,
+      "detail": "max-age=31536000; includeSubDomains | no-referrer"
+    },
+    {
+      "name": "index.html is not cached long",
+      "ok": true,
+      "detail": "no-cache"
+    },
+    {
+      "name": "Hashed asset is immutable and served from the CloudFront cache",
+      "ok": true,
+      "detail": "/assets/index-BCSAMsns.js public, max-age=31536000, immutable Hit from cloudfront br"
+    },
+    {
+      "name": "GET /healthz → 200 {ok:true}",
+      "ok": true,
+      "detail": "{\"ok\":true,\"version\":\"1.0.0+bc87c1a48e07\"}"
+    },
+    {
+      "name": "HTTP redirects to HTTPS",
+      "ok": true,
+      "detail": "301 → https://my-kart.whchoi.net/"
+    },
+    {
+      "name": "GET /api/leaderboard → 200 JSON",
+      "ok": true,
+      "detail": "200, 0 entries, no-store"
+    },
+    {
+      "name": "POST /api/runs with an invalid body → 400",
+      "ok": true,
+      "detail": "400"
+    },
+    {
+      "name": "Service worker served fresh (no long cache)",
+      "ok": true,
+      "detail": "200 no-cache 13887 B"
+    },
+    {
+      "name": "Manifest installable: 192/512 + maskable icons reachable",
+      "ok": true,
+      "detail": "5 icons, display fullscreen"
+    },
+    {
+      "name": "Shell build id matches build.json and the service worker",
+      "ok": true,
+      "detail": "meta 0e18641074f0a351 build.json 0e18641074f0a351"
+    },
+    {
+      "name": "iOS home-screen icon (PNG 180) is served",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "Direct ALB access from outside CloudFront is blocked",
+      "ok": true,
+      "detail": "unreachable (TimeoutError)"
+    },
+    {
+      "name": "Custom domain my-kart.whchoi.net is served by CloudFront with a valid certificate (DNS-independent)",
+      "ok": true,
+      "detail": "edge 18.64.8.78 → 200; * subject: CN=*.whchoi.net"
+    },
+    {
+      "name": "Tampered time is rejected by server re-simulation (422)",
+      "ok": true,
+      "detail": "422 {\"accepted\":false,\"id\":\"\",\"rank\":null,\"personalBest\":false,\"reason\":\"제출한 완주 시간이 서버 재시뮬레이션 결과와 다릅니다.\",\"error\":\"TIME_MISMA"
+    },
+    {
+      "name": "Honest run is verified and accepted",
+      "ok": true,
+      "detail": "200 rank=1 in 501 ms"
+    },
+    {
+      "name": "Accepted run appears on the leaderboard",
+      "ok": true,
+      "detail": "1 entries"
+    },
+    {
+      "name": "Ghost download returns the verified log",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "QA rows cleaned up afterwards",
+      "ok": true,
+      "detail": "4 items deleted"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "turbo-pals-grand-prix",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TURBO PALS GRAND PRIX — arcade 3D kart racing with drift mini-turbos, items, CPU rivals and verified time-trial rankings",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node tools/dev.mjs",
+    "build": "node tools/build.mjs",
+    "start": "node dist/server/index.js",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p infra/tsconfig.json",
+    "test": "vitest run",
+    "synth": "cdk synth --quiet",
+    "deploy": "cdk deploy --require-approval never --outputs-file cdk-outputs.json",
+    "qa:screens": "tsx tools/qa-screens.ts",
+    "verify:live": "tsx tools/verify-live.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1136.0",
+    "@aws-sdk/lib-dynamodb": "3.1136.0",
+    "@fastify/compress": "9.2.0",
+    "@fastify/rate-limit": "11.2.0",
+    "@fastify/static": "10.1.4",
+    "@fontsource/black-han-sans": "^5.3.0",
+    "@fontsource/jua": "^5.3.0",
+    "fastify": "5.12.5",
+    "three": "0.186.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/three": "0.186.0",
+    "aws-cdk": "2.1142.0",
+    "aws-cdk-lib": "2.270.0",
+    "cdk-nag": "3.0.2",
+    "constructs": "10.8.1",
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.0",
+    "vitest": "^4.1.0"
+  }
+}

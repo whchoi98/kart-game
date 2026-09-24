@@ -1,0 +1,163 @@
+/* PWA surfaces: offline chip, 앱 설치, update banner, waiting-run notices, iOS guide, results bits. */
+
+/* small button (menus' side column, notices, banners) */
+.btn--sm { min-height: 2.5rem; padding: 0.35rem 0.95rem; gap: 0.45rem; font-size: 1.05rem; border-radius: 0.8rem; box-shadow: 0 0.22rem 0 var(--ink); }
+.btn--sm .btn__ico { width: 1.25rem; height: 1.25rem; }
+.btn--sm.is-focus { transform: translateY(-0.1rem) scale(1.04); box-shadow: 0 0.3rem 0 var(--ink), var(--glow); }
+
+/* ───────── offline readiness chip ───────── */
+.pwa-chip {
+  display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.28rem 0.8rem 0.28rem 0.32rem; border-radius: 999px;
+  background: rgba(27, 16, 54, 0.8); color: #fff; font-size: 0.9rem; line-height: 1.2; white-space: nowrap;
+  border: var(--line-thin) solid rgba(255, 255, 255, 0.35); cursor: default;
+}
+.pwa-chip__ico { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; flex: none; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
+.pwa-chip__ico .ico { width: 1.05rem; height: 1.05rem; }
+.pwa-chip[data-tone='good'] .pwa-chip__ico { background: var(--green); color: var(--ink); }
+.pwa-chip[data-tone='bad'] { border-color: rgba(255, 77, 94, 0.8); }
+.pwa-chip[data-tone='bad'] .pwa-chip__ico { background: var(--red); }
+.pwa-chip[data-tone='off'] .pwa-chip__ico { background: var(--ink-3); }
+.pwa-chip__spin { width: 0.95rem; height: 0.95rem; border-radius: 50%; border: 0.18rem solid rgba(255, 255, 255, 0.3); border-top-color: var(--yellow); animation: pwa-spin 0.9s linear infinite; }
+@keyframes pwa-spin { to { transform: rotate(360deg); } }
+.pwa-chip__retry {
+  margin-left: 0.15rem; padding: 0.1rem 0.65rem; border-radius: 999px; background: var(--yellow); color: var(--ink);
+  font-family: var(--font-display); font-size: 0.85rem; border: var(--line-thin) solid var(--ink); box-shadow: 0 0.12rem 0 var(--ink);
+}
+
+/* ───────── update banner ───────── */
+.pwa-update {
+  display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem 0.55rem 0.5rem 0.7rem; border-radius: 1.1rem;
+  background: linear-gradient(135deg, #fff6c2, #ffd23f); color: var(--ink); border: var(--line) solid var(--ink); box-shadow: var(--drop-lg);
+  animation: pop-in 0.35s var(--ease-pop) both;
+}
+.pwa-update__ico { width: 2rem; height: 2rem; padding: 0.35rem; flex: none; border-radius: 50%; background: var(--pink); color: #fff; border: var(--line-thin) solid var(--ink); }
+.pwa-update__text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.pwa-update__text strong { font-family: var(--font-display); font-weight: 400; font-size: 1.15rem; line-height: 1.15; }
+.pwa-update__sub { font-size: 0.85rem; line-height: 1.3; color: var(--ink-2); }
+
+/* ───────── title screen placement ───────── */
+.title__top { position: absolute; top: calc(0.9rem + var(--safe-t)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 2rem); cursor: default; }
+.title__sys {
+  position: absolute; left: calc(1rem + var(--safe-l)); right: calc(1rem + var(--safe-r)); bottom: calc(0.8rem + var(--safe-b));
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 0.8rem; pointer-events: none;
+}
+.title__sys > * { pointer-events: auto; }
+/* the full-width version line is drawn after (on top of) the chip / 앱 설치: let taps through */
+.title__foot { pointer-events: none; }
+.title__sys, .title__top { z-index: 1; }
+.title__install { margin-left: auto; }
+/* the version line sits between the two on wide screens; move them above it on narrow ones */
+.vp-narrow .title__sys, .vp-portrait .title__sys { bottom: calc(2.6rem + var(--safe-b)); }
+
+/* ───────── main menu right column ───────── */
+.menu__side { grid-column: 2; grid-row: 1 / 3; justify-self: end; align-self: stretch; width: 19rem; display: flex; flex-direction: column; gap: 0.7rem; min-height: 0; }
+.menu__sys { display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-height: 2.5rem; }
+.menu__side .menu__profile { margin-top: auto; }
+/* narrow column: the headline keeps one line, the button takes its own row */
+.menu__side .pwa-update { flex-wrap: wrap; row-gap: 0.4rem; }
+.menu__side .pwa-update__text { flex: 1 1 8rem; }
+.menu__side .pwa-update__text strong { white-space: nowrap; }
+.menu__side .pwa-update .btn { flex: 1 1 100%; }
+
+/* ───────── waiting (offline) runs ───────── */
+.pwa-notices { display: flex; flex-direction: column; gap: 0.6rem; }
+.pwa-notice {
+  display: flex; flex-direction: column; gap: 0.45rem; padding: 0.7rem 0.8rem; border-radius: 1.1rem;
+  background: rgba(255, 250, 240, 0.96); color: var(--ink); border: var(--line) solid var(--ink); box-shadow: var(--drop);
+  animation: pop-in 0.3s var(--ease-pop) both;
+}
+.pwa-notice__head { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 1.1rem; }
+.pwa-notice__head strong { font-weight: 400; }
+.pwa-notice__ico { width: 1.7rem; height: 1.7rem; padding: 0.28rem; border-radius: 0.5rem; background: var(--ink); color: var(--yellow); }
+.pwa-notice--ready .pwa-notice__ico { background: var(--pink); color: #fff; }
+.pwa-notice--offline .pwa-notice__ico { background: var(--ink-3); color: #fff; }
+.pwa-notice__text { font-size: 0.92rem; line-height: 1.4; color: var(--ink-2); }
+.pwa-notice__list { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.85rem; }
+.pwa-notice__list li { padding: 0.15rem 0.5rem; border-radius: 0.5rem; background: var(--paper-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pwa-notice__more { color: var(--ink-3); }
+.pwa-notice__actions { display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
+
+/* leaderboard: one line above the list */
+.pwa-notices--inline .pwa-notice { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.8rem; padding: 0.4rem 0.6rem; }
+.pwa-notices--inline .pwa-notice__list { display: none; }
+.pwa-notices--inline .pwa-notice__text { flex: 1; min-width: 12rem; }
+.pwa-notices--inline .pwa-notice__actions { margin-left: auto; }
+
+/* ───────── settings: 앱 ───────── */
+.pwa-detail {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.7rem 0.9rem; border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94); color: var(--ink); border: var(--line) solid var(--ink); box-shadow: var(--drop);
+}
+.pwa-detail__text { font-size: 0.95rem; line-height: 1.4; color: var(--ink-2); }
+.settings__install { align-self: flex-start; }
+
+/* ───────── leaderboard offline ───────── */
+.lb__state--offline .lb__state-ico { color: var(--ink-3); }
+.lb__state--offline .lb__state-sub { max-width: 34em; line-height: 1.45; }
+.lb__offline-note { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.7rem; border-radius: 0.7rem; background: var(--paper-2); font-size: 0.9rem; color: var(--ink-2); flex: none; }
+
+/* ───────── iOS "홈 화면에 추가" guide ───────── */
+.ios-guide { display: flex; flex-direction: column; gap: 0.8rem; }
+.ios-guide__steps { display: flex; flex-direction: column; gap: 0.55rem; }
+.ios-guide__step { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 1.05rem; line-height: 1.6; }
+.ios-guide__num {
+  flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; margin-top: 0.05rem;
+  background: var(--pink); color: #fff; font-family: var(--font-num); font-weight: 400; border: var(--line-thin) solid var(--ink);
+}
+.ios-guide__txt strong { font-family: var(--font-display); font-weight: 400; }
+.ios-guide__glyph {
+  display: inline-grid; width: 1.7rem; height: 1.7rem; padding: 0.22rem; vertical-align: -0.5rem; margin: 0 0.1rem;
+  border-radius: 0.45rem; background: #fff; color: #2f8cff; border: var(--line-thin) solid rgba(27, 16, 54, 0.35);
+}
+.ios-guide__note { font-size: 0.92rem; line-height: 1.45; color: var(--ink-2); padding: 0.6rem 0.8rem; border-radius: 0.8rem; background: var(--paper-2); }
+
+/* ───────── pending submission results (modal) ───────── */
+.pending-result__wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+.pending-result { display: flex; flex-direction: column; gap: 0.35rem; }
+.pending-result__row {
+  display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; padding: 0.35rem 0.6rem;
+  border-radius: 0.7rem; background: #fff; border: var(--line-thin) solid rgba(27, 16, 54, 0.25); font-size: 0.95rem;
+}
+.pending-result__row .ico { width: 1.3rem; height: 1.3rem; }
+.pending-result__row.is-ok .ico { color: #0e8a47; }
+.pending-result__row.is-bad .ico { color: #c8173d; }
+.pending-result__run { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pending-result__msg { font-family: var(--font-display); font-weight: 400; text-align: right; }
+.pending-result__note { font-size: 0.95rem; line-height: 1.45; color: var(--ink-2); }
+
+/* ───────── time-trial results: waiting / assisted ───────── */
+.submit__note { font-size: 1rem; line-height: 1.5; color: var(--ink-2); }
+.submit--assisted { background: #eef0ff; }
+.btn.is-queued { background: linear-gradient(180deg, #efeaff, #d4c8ff); color: var(--ink); }
+.btn.is-queued .btn__label { text-shadow: none; }
+
+/* ───────── podium: unlock notices inside the trophy card ───────── */
+.trophy-card__text { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; min-width: 0; }
+.trophy-card__unlock {
+  display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.75rem; border-radius: 999px; white-space: nowrap;
+  background: linear-gradient(135deg, #fff6c2, #ffd23f); border: var(--line-thin) solid var(--ink); box-shadow: 0 0.15rem 0 var(--ink);
+  font-family: var(--font-display); font-size: 1rem;
+}
+.trophy-card__unlock .ico { color: var(--pink); }
+
+/* ───────── compact screens ───────── */
+.vp-short .pwa-notice { padding: 0.45rem 0.6rem; gap: 0.3rem; }
+.vp-short .pwa-notice__list { display: none; }
+.vp-short .pwa-notice__text { font-size: 0.85rem; }
+.vp-short .pwa-update { padding: 0.35rem 0.45rem 0.35rem 0.55rem; gap: 0.5rem; }
+.vp-short .pwa-update__sub { display: none; }
+.vp-short .menu__side { gap: 0.45rem; }
+.vp-short .menu__sys { min-height: 0; }
+.vp-short .pwa-notices--inline .pwa-notice { padding: 0.25rem 0.5rem; }
+.vp-short .pwa-notices--inline .pwa-notice__head { font-size: 0.95rem; }
+.vp-short .lb__state { padding: 0.6rem 1rem; gap: 0.4rem; font-size: 1rem; }
+.vp-short .lb__state-ico { width: 2.2rem; height: 2.2rem; }
+
+@media (max-width: 900px), (max-height: 520px) {
+  .menu__side { width: 100%; }
+}
+
+@media (max-width: 640px) and (min-height: 401px) {
+  .menu__side { width: 100%; align-self: stretch; }
+  .menu__sys { justify-content: center; }
+}

@@ -1,0 +1,144 @@
+/* TURBO PALS GRAND PRIX — global tokens & base. Menus: ui/ui.css · HUD: ui/hud.css · touch: input/touch.css */
+
+:root {
+  color-scheme: dark;
+  --ink: #1b1036;
+  --ink-2: #2d1b5e;
+  --ink-3: #46307f;
+  --paper: #fffaf0;
+  --paper-2: #f3ecff;
+  --white: #ffffff;
+  --pink: #ff3d8b;
+  --pink-2: #ff7ab6;
+  --orange: #ff8a1f;
+  --yellow: #ffd23f;
+  --yellow-2: #fff3a8;
+  --blue: #2f8cff;
+  --cyan: #19d3ff;
+  --green: #3ddc84;
+  --green-2: #7dffb0;
+  --purple: #8b5cff;
+  --red: #ff4d5e;
+  --gold: #ffcf33;
+  --silver: #d7e1ea;
+  --bronze: #e39a5b;
+  --p1: #ff3d8b;
+  --p2: #2fb5ff;
+
+  --font-display: 'Black Han Sans', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', 'Nanum Gothic', system-ui, sans-serif;
+  --font-body: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', 'Nanum Gothic', system-ui, sans-serif;
+  --font-num: 'Black Han Sans', 'Arial Black', 'Helvetica Neue', system-ui, sans-serif;
+
+  --line: 0.2rem;
+  --line-thin: 0.14rem;
+  --radius: 1.1rem;
+  --radius-sm: 0.7rem;
+  --drop: 0 0.32rem 0 var(--ink);
+  --drop-lg: 0 0.45rem 0 var(--ink), 0 1rem 2rem rgba(18, 6, 44, 0.35);
+  --glow: 0 0 0 0.26rem #fff, 0 0 0 0.52rem var(--yellow), 0 0 1.8rem 0.5rem rgba(255, 210, 63, 0.65);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.2, 0.9, 0.3, 1);
+
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+
+  /* One scale for the whole UI: tracks the smaller viewport dimension. */
+  font-size: clamp(11px, min(1.25vw, 2.2vh), 40px);
+}
+
+/* Narrow PORTRAIT phones only: a 640×360 landscape phone keeps the landscape scale (16 px type
+   there overflowed every results table); landscape phones are never taller than ~430 px. */
+@media (max-width: 640px) and (min-height: 401px) {
+  :root { font-size: clamp(11px, 3.1vw, 16px); }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #120a2b;
+  color: #fff;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input, textarea { user-select: text; -webkit-user-select: text; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:focus, [data-nav]:focus { outline: none; }
+
+h1, h2, h3, p, ol, ul, dl, dd { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+
+kbd { font-family: inherit; }
+
+[hidden] { display: none !important; }
+
+#view {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(120% 90% at 50% 0%, #3a2a8f 0%, #1a0f45 60%, #0d0624 100%);
+}
+#view canvas { display: block; width: 100%; height: 100%; }
+
+#ui {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+#ui > .splash, #ui > .fatal, .tp-screens { pointer-events: auto; }
+
+.ico { display: inline-grid; place-items: center; width: 1.2em; height: 1.2em; flex: none; }
+.ico svg { width: 100%; height: 100%; display: block; }
+
+.portrait { display: inline-block; width: 3rem; height: 3rem; flex: none; border-radius: 50%; }
+.portrait svg { width: 100%; height: 100%; display: block; }
+.portrait--sm { width: 2.2rem; height: 2.2rem; }
+.portrait--md { width: 4.2rem; height: 4.2rem; }
+
+/* Static boot splash (index.html) before the app mounts */
+.splash {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

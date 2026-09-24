@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Scenery B preview</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #111; overflow: hidden; }
+  #app { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; }
+  #hud { position: fixed; left: 8px; top: 8px; z-index: 2; color: #fff; font: 12px/1.4 monospace; background: rgba(0,0,0,.45); padding: 6px 8px; border-radius: 6px; pointer-events: none; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="hud">loading…</div>
+<script type="module" src="./scenery-b.ts"></script>
+</body>
+</html>

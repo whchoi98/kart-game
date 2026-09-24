@@ -1,0 +1,10 @@
+node_modules/
+dist/
+cdk.out/
+.env
+.env.*
+cdk-outputs.json
+*.log
+test-results/
+playwright-report/
+.DS_Store

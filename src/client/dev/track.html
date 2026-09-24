@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Track mesh preview</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #111; overflow: hidden; font: 12px/1.4 system-ui, sans-serif; }
+    #app { position: fixed; inset: 0; }
+    #hud { position: fixed; left: 8px; top: 8px; color: #fff; background: rgba(0,0,0,0.55); padding: 6px 8px; border-radius: 6px; white-space: pre; pointer-events: none; }
+    #hud.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="hud"></div>
+  <script type="module" src="./track.ts"></script>
+</body>
+</html>
