@@ -1,0 +1,14 @@
+Copyright (c) 2026 WooHyung Choi. All rights reserved.
+
+TURBO PALS GRAND PRIX, including its source code, procedurally generated characters, tracks, art,
+music, sound design and documentation, is proprietary.
+
+This repository is public so that it can be viewed. No license is granted to copy, modify, merge,
+publish, distribute, sublicense, sell or deploy this software or its content, in whole or in part,
+without prior written permission from the copyright holder. GitHub's Terms of Service allow other
+GitHub users to view and fork public repositories on GitHub; that permission grants no further rights.
+
+Third-party packages listed in package.json (for example three.js, Fastify, the AWS SDK and the
+@fontsource font packages) remain under their own licenses.
+
+For permission requests, open an issue at https://github.com/whchoi98/kart-game/issues.

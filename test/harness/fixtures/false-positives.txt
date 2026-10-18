@@ -1,0 +1,21 @@
+# False positives: no line may be flagged by .claude/hooks/secret-scan.sh --check-stdin.
+# Mostly shapes that really occur in this repository. Add a line here whenever a pattern is relaxed or tightened.
+const originSecret = secretsmanager.Secret.fromSecretNameV2(this, 'OriginSecret', 'turbo-pals/origin-verify');
+readonly originSecret: secretsmanager.ISecret;
+secretName: 'turbo-pals/origin-verify-secret',
+const secret = await readSecret(arn);
+password = ""
+password: string;
+apiKey: process.env.API_KEY,
+"X-Origin-Verify": originHeaderValue,
+AKIA is the prefix of a long-term AWS access key id; ASIA marks temporary credentials.
+ARG NODE_IMAGE=node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+arn:aws:acm:us-east-1:061525506239:certificate/00000000-0000-0000-0000-000000000000
+dGhpcyBpcyBhIHRlc3Q=
+-----BEGIN PUBLIC KEY-----
+-----BEGIN CERTIFICATE-----
+https://github.com/whchoi98/kart-game/compare/v1.0.0...HEAD
+sk-ant prefix keys are rejected by the API when truncated
+const task = 'skip_live_reload';
+aws secretsmanager put-secret-value --secret-id "$SECRET_ARN" --secret-string "$(openssl rand -hex 32)"
+export CLAUDE_NOTIFY_WEBHOOK="https://hooks.slack.com/services/YOUR/WEBHOOK/URL"

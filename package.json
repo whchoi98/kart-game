@@ -13,6 +13,7 @@
     "start": "node dist/server/index.js",
     "typecheck": "tsc --noEmit && tsc --noEmit -p infra/tsconfig.json",
     "test": "vitest run",
+    "test:harness": "bash test/harness/run-all.sh",
     "synth": "cdk synth --quiet",
     "deploy": "cdk deploy --require-approval never --outputs-file cdk-outputs.json",
     "qa:screens": "tsx tools/qa-screens.ts",

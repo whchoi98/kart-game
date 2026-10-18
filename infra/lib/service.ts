@@ -23,7 +23,8 @@ import {
 export const IMAGE_CONTEXT_EXCLUDE = [
   '.git', '.github', '.claude', '.agents', '.codex', '.superpowers', '.vscode', '.idea',
   'node_modules', 'dist', 'coverage', 'cdk.out', 'cdk.out.*', 'cdk.json', 'cdk.context.json', 'cdk-outputs.json',
-  'infra', 'test', 'test-results', 'playwright-report', 'docs', 'artifacts', '*.md',
+  'infra', 'test', 'test-results', 'playwright-report', 'docs', 'artifacts',
+  'scripts', 'LICENSE', '.editorconfig', '.mcp.json', '.mcp.json.example', '*.md', '**/*.md',
   'tools/*', '!tools/build.mjs',
   '.env', '.env.*', '**/.env', '**/.env.*', '*.pem', '**/*.pem', '*.key', '**/*.key',
   '.npmrc', '**/.npmrc', '*.log', '**/*.log', '.DS_Store', '**/.DS_Store',

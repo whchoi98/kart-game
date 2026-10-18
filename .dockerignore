@@ -22,7 +22,13 @@ test-results
 playwright-report
 docs
 artifacts
+scripts
+LICENSE
+.editorconfig
+.mcp.json
+.mcp.json.example
 *.md
+**/*.md
 tools/*
 !tools/build.mjs
 .env
