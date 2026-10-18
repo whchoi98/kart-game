@@ -8,6 +8,8 @@
 
 Arcade 3D kart racing in the browser with drift mini-turbos, items, CPU rivals and server-verified time-trial rankings. | 드리프트 미니 터보, 아이템, CPU 라이벌, 서버가 검증하는 타임 어택 순위를 갖춘 브라우저용 아케이드 3D 카트 레이싱 게임입니다.
 
+![TURBO PALS GRAND PRIX title screen](docs/images/title.jpg)
+
 ---
 
 <a id="english"></a>
@@ -23,6 +25,18 @@ rankings that the server verifies by re-simulating every submitted run. Play it 
 > All characters, items, tracks, graphics and music are original content generated procedurally.
 > The game uses no external image, 3D model or audio asset files and no third-party IP; the only bundled third-party
 > assets are the open-licensed (OFL 1.1) Black Han Sans and Jua fonts.
+
+### Screenshots
+
+Captured from the current build at 1280x720 with the high quality tier (CPU racers at 150cc, the player kart on autopilot).
+
+| Sunny Meadow Circuit: 8-kart VS race | Neon City Nights: night theme with bloom |
+|:---:|:---:|
+| ![Sunny Meadow Circuit VS race with item boxes, minimap and position HUD](docs/images/race-sunny-meadow.jpg) | ![Neon City Nights race under neon arches](docs/images/race-neon-city.jpg) |
+| **Lava Fortress: volcano and lava fields** | **2-player split screen on Palm Beach Boulevard** |
+| ![Lava Fortress race past the volcano and lava fields](docs/images/race-lava-fortress.jpg) | ![Two players racing on Palm Beach Boulevard in split screen](docs/images/split-screen-palm-beach.jpg) |
+| **Main menu** | **Boost on Neon City Nights (202 km/h)** |
+| ![Main menu with Grand Prix, VS Race, Time Trial and 2-player modes](docs/images/menu.jpg) | ![Neon City Nights straight during a boost, speed gauge at 202 km/h](docs/images/race-neon-city-boost.jpg) |
 
 ## Features
 
@@ -201,6 +215,7 @@ kart-game/
   public/           # PWA manifest and icons
   scripts/          # Developer setup and Git hook installation
   docs/             # Architecture, design, infrastructure, ADRs, runbooks, references
+    images/         # README screenshots
   Dockerfile        # Two-stage production image (node:24-alpine)
   .env.example      # Every environment variable with its default
 ```
@@ -303,6 +318,18 @@ TURBO PALS GRAND PRIX(터보 팰즈 그랑프리)는 브라우저에서 바로 �
 > 캐릭터·아이템·트랙·그래픽·음악은 모두 절차적으로 생성한 오리지널 콘텐츠입니다.
 > 외부 이미지·3D 모델·오디오 에셋 파일이나 타사 IP를 쓰지 않으며, 함께 번들되는 외부 에셋은 오픈 라이선스(OFL 1.1) 폰트인
 > Black Han Sans와 Jua뿐입니다.
+
+### 스크린샷
+
+현재 빌드를 1280x720, 고화질(high) 티어로 캡처한 화면입니다(CPU는 150cc, 플레이어 카트는 자동 주행).
+
+| 햇살 초원 서킷: 8대가 겨루는 VS 레이스 | 네온 시티 나이트: 블룸이 들어간 야간 테마 |
+|:---:|:---:|
+| ![아이템 박스, 미니맵, 순위 HUD가 보이는 햇살 초원 서킷 VS 레이스](docs/images/race-sunny-meadow.jpg) | ![밤의 네온 아치 아래를 달리는 네온 시티 나이트 레이스](docs/images/race-neon-city.jpg) |
+| **용암 요새: 화산과 용암 지대** | **야자수 해변 2인 분할 화면** |
+| ![화산과 용암 지대를 지나는 용암 요새 레이스](docs/images/race-lava-fortress.jpg) | ![야자수 해변에서 분할 화면으로 달리는 두 플레이어](docs/images/split-screen-palm-beach.jpg) |
+| **메인 메뉴** | **네온 시티 나이트 부스트 (202 km/h)** |
+| ![그랑프리, VS 레이스, 타임 어택, 2인 대전 모드가 있는 메인 메뉴](docs/images/menu.jpg) | ![부스트 중 속도계가 202 km/h를 가리키는 네온 시티 나이트 직선 구간](docs/images/race-neon-city-boost.jpg) |
 
 ## 주요 기능
 
@@ -476,6 +503,7 @@ kart-game/
   public/           # PWA manifest와 아이콘
   scripts/          # 개발 환경 설정과 Git hook 설치
   docs/             # 아키텍처, 디자인, 인프라, ADR, 런북, 레퍼런스
+    images/         # README 스크린샷
   Dockerfile        # 2단계 프로덕션 이미지 (node:24-alpine)
   .env.example      # 모든 환경 변수와 기본값
 ```

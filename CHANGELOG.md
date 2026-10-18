@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add the LICENSE file (all rights reserved)
+- Add gameplay screenshots to the README: title screen, main menu and race scenes on four tracks, including 2-player split screen (`docs/images/`)
 - Add bilingual (English and Korean) project documentation: README, architecture, architecture decision records, runbooks, implementation references, API reference and onboarding guide
 - Add developer tooling: Claude Code hooks, skills, commands and agents in `.claude/`, the shell test harness (`npm run test:harness`), `scripts/setup.sh`, `scripts/install-hooks.sh` and `.env.example`
 
@@ -59,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - LICENSE 파일 추가 (All rights reserved)
+- README에 게임 실행 화면 추가: 타이틀 화면, 메인 메뉴, 2인 분할 화면을 포함한 트랙 4곳의 레이스 장면 (`docs/images/`)
 - 영어·한국어 이중 언어 프로젝트 문서 추가: README, 아키텍처, 아키텍처 결정 기록(ADR), 런북, 구현 레퍼런스, API 레퍼런스, 온보딩 가이드
 - 개발 도구 추가: `.claude/`의 Claude Code hook·skill·command·agent, 셸 테스트 하네스(`npm run test:harness`), `scripts/setup.sh`, `scripts/install-hooks.sh`, `.env.example`
 
